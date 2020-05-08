@@ -1,0 +1,53 @@
+============================= test session starts =============================
+platform win32 -- Python 3.8.1, pytest-5.4.1, py-1.8.1, pluggy-0.13.1 -- C:\Users\Jonathan\Codenation\data-science-0\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Jonathan\Codenation\data-science-2
+collecting ... collected 7 items
+
+test_submit.py::test_q1 PASSED                                           [ 14%]
+test_submit.py::test_q2 PASSED                                           [ 28%]
+test_submit.py::test_q3 PASSED                                           [ 42%]
+test_submit.py::test_q4 PASSED                                           [ 57%]
+test_submit.py::test_q5 PASSED                                           [ 71%]
+test_submit.py::test_q6 PASSED                                           [ 85%]
+test_submit.py::test_q7 PASSED                                           [100%]
+
+============================== warnings summary ===============================
+C:\Users\Jonathan\Codenation\data-science-0\venv\lib\site-packages\_pytest\junitxml.py:417
+  C:\Users\Jonathan\Codenation\data-science-0\venv\lib\site-packages\_pytest\junitxml.py:417: PytestDeprecationWarning: The 'junit_family' default value will change to 'xunit2' in pytest 6.0.
+  Add 'junit_family=xunit1' to your pytest.ini file to keep the current format in future versions of pytest and silence this warning.
+    _issue_warning_captured(deprecated.JUNIT_XML_DEFAULT_FAMILY, config.hook, 2)
+
+C:\Users\Jonathan\Codenation\data-science-0\venv\lib\site-packages\patsy\constraint.py:13
+  C:\Users\Jonathan\Codenation\data-science-0\venv\lib\site-packages\patsy\constraint.py:13: DeprecationWarning: Using or importing the ABCs from 'collections' instead of from 'collections.abc' is deprecated since Python 3.3, and in 3.9 it will stop working
+    from collections import Mapping
+
+test_submit.py::test_q2
+test_submit.py::test_q4
+  C:\Users\Jonathan\Codenation\data-science-0\venv\lib\site-packages\scipy\stats\_distn_infrastructure.py:903: RuntimeWarning: invalid value encountered in greater
+    return (a < x) & (x < b)
+
+test_submit.py::test_q2
+test_submit.py::test_q4
+  C:\Users\Jonathan\Codenation\data-science-0\venv\lib\site-packages\scipy\stats\_distn_infrastructure.py:903: RuntimeWarning: invalid value encountered in less
+    return (a < x) & (x < b)
+
+test_submit.py::test_q2
+  C:\Users\Jonathan\Codenation\data-science-0\venv\lib\site-packages\scipy\stats\_distn_infrastructure.py:1827: RuntimeWarning: invalid value encountered in greater_equal
+    cond2 = (x >= np.asarray(_b)) & cond0
+
+test_submit.py::test_q3
+  C:\Users\Jonathan\Codenation\data-science-0\venv\lib\site-packages\scipy\stats\mstats_basic.py:2476: RuntimeWarning: overflow encountered in int_scalars
+    (n*(n-2)*(n-3)))
+
+test_submit.py::test_q4
+  C:\Users\Jonathan\Codenation\data-science-0\venv\lib\site-packages\scipy\stats\_distn_infrastructure.py:1912: RuntimeWarning: invalid value encountered in less_equal
+    cond2 = cond0 & (x <= _a)
+
+test_submit.py::test_q4
+  C:\Users\Jonathan\Codenation\data-science-0\venv\lib\site-packages\scipy\stats\stats.py:1548: RuntimeWarning: invalid value encountered in sign
+    term2 = np.sign(denom) * np.where(denom == 0.0, np.nan,
+
+-- Docs: https://docs.pytest.org/en/latest/warnings.html
+- generated xml file: C:\Users\Jonathan\Codenation\data-science-2\output.xml --
+======================= 7 passed, 10 warnings in 2.73s ========================
