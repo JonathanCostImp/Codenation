@@ -11,7 +11,7 @@
 
 # ## _Setup_ geral
 
-# In[15]:
+# In[1]:
 
 
 import pandas as pd
@@ -23,7 +23,7 @@ import statsmodels.api as sm
 import pylab
 
 
-# In[16]:
+# In[2]:
 
 
 #%matplotlib inline
@@ -35,13 +35,13 @@ figsize(12, 8)
 sns.set()
 
 
-# In[17]:
+# In[3]:
 
 
 df = pd.read_csv("athletes.csv")
 
 
-# In[18]:
+# In[4]:
 
 
 def get_sample(df, col_name, n=100, seed=42):
@@ -77,7 +77,7 @@ def get_sample(df, col_name, n=100, seed=42):
 
 # ## Inicia sua análise a partir daqui
 
-# In[19]:
+# In[5]:
 
 
 # Sua análise começa aqui.
@@ -87,13 +87,13 @@ def get_sample(df, col_name, n=100, seed=42):
 # 
 # Considerando uma amostra de tamanho 3000 da coluna `height` obtida com a função `get_sample()`, execute o teste de normalidade de Shapiro-Wilk com a função `scipy.stats.shapiro()`. Podemos afirmar que as alturas são normalmente distribuídas com base nesse teste (ao nível de significância de 5%)? Responda com um boolean (`True` ou `False`).
 
-# In[22]:
+# In[6]:
 
 
 def q1():
     sampleheight = get_sample(df, 'height', n=3000)
-    shs = sct.shapiro(sampleheight)
-    return bool(shs[1] > 0.05)
+    sampleheightshapiro = sct.shapiro(sampleheight)
+    return bool(sampleheightshapiro[1] > 0.05)
 
 
 # __Para refletir__:
@@ -106,13 +106,13 @@ def q1():
 # 
 # Repita o mesmo procedimento acima, mas agora utilizando o teste de normalidade de Jarque-Bera através da função `scipy.stats.jarque_bera()`. Agora podemos afirmar que as alturas são normalmente distribuídas (ao nível de significância de 5%)? Responda com um boolean (`True` ou `False`).
 
-# In[23]:
+# In[7]:
 
 
 def q2():
     sampleheight = df['height'].sample(n = 3000)
-    shjb = sct.jarque_bera(sampleheight)
-    return bool(shjb[1] > 0.05)
+    sampleheightjarque_bera = sct.jarque_bera(sampleheight)
+    return bool(sampleheightjarque_bera[1] > 0.05)
 
 
 # __Para refletir__:
@@ -123,13 +123,28 @@ def q2():
 # 
 # Considerando agora uma amostra de tamanho 3000 da coluna `weight` obtida com a função `get_sample()`. Faça o teste de normalidade de D'Agostino-Pearson utilizando a função `scipy.stats.normaltest()`. Podemos afirmar que os pesos vêm de uma distribuição normal ao nível de significância de 5%? Responda com um boolean (`True` ou `False`).
 
-# In[24]:
+# In[8]:
 
 
 def q3():
     sampleweight = df['weight'].sample(n = 3000)
     k2, p = sct.normaltest(sampleweight, nan_policy='omit')
     return bool(p > 0.05)
+
+
+# In[9]:
+
+
+sampleweight = df['weight'].sample(n = 3000)
+k2, p = sct.normaltest(sampleweight, nan_policy='omit')
+bool(p > 0.05)
+sampleweight.hist(bins = 25)
+
+
+# In[10]:
+
+
+sns.boxplot(sampleweight)
 
 
 # __Para refletir__:
@@ -141,7 +156,7 @@ def q3():
 # 
 # Realize uma transformação logarítmica em na amostra de `weight` da questão 3 e repita o mesmo procedimento. Podemos afirmar a normalidade da variável transformada ao nível de significância de 5%? Responda com um boolean (`True` ou `False`).
 
-# In[25]:
+# In[11]:
 
 
 def q4():
@@ -149,6 +164,22 @@ def q4():
     samplelogweight = logweight.sample(n = 3000)
     k2, p = sct.normaltest(logweight)
     return bool(p > 0.05)
+
+
+# In[12]:
+
+
+logweight = np.log(df['weight'])
+samplelogweight = logweight.sample(n = 3000)
+k2, p = sct.normaltest(logweight)
+bool(p > 0.05)
+samplelogweight.hist(bins = 25)
+
+
+# In[13]:
+
+
+sns.boxplot(samplelogweight)
 
 
 # __Para refletir__:
@@ -162,7 +193,7 @@ def q4():
 # 
 # Obtenha todos atletas brasileiros, norte-americanos e canadenses em `DataFrame`s chamados `bra`, `usa` e `can`,respectivamente. Realize um teste de hipóteses para comparação das médias das alturas (`height`) para amostras independentes e variâncias diferentes com a função `scipy.stats.ttest_ind()` entre `bra` e `usa`. Podemos afirmar que as médias são estatisticamente iguais? Responda com um boolean (`True` ou `False`).
 
-# In[26]:
+# In[14]:
 
 
 def q5():
@@ -170,16 +201,16 @@ def q5():
     usa = df[df['nationality']=='USA']['height'].dropna()
     can = df[df['nationality']=='CAN']['height'].dropna()
     
-    ttest = sct.ttest_ind(bra, usa)
+    ttest_bra_usa = sct.ttest_ind(bra, usa)
     
-    return bool(ttest [1] > 0.025)
+    return bool(ttest_bra_usa [1] > 0.025)
 
 
 # ## Questão 6
 # 
 # Repita o procedimento da questão 5, mas agora entre as alturas de `bra` e `can`. Podemos afimar agora que as médias são estatisticamente iguais? Reponda com um boolean (`True` ou `False`).
 
-# In[27]:
+# In[15]:
 
 
 def q6():
@@ -187,25 +218,25 @@ def q6():
     usa = df[df['nationality']=='USA']['height'].dropna()
     can = df[df['nationality']=='CAN']['height'].dropna()
     
-    ttest = sct.ttest_ind(bra, can)
+    ttest_bra_can = sct.ttest_ind(bra, can)
     
-    return bool(ttest [1] > 0.025)
+    return bool(ttest_bra_can [1] > 0.025)
 
 
 # ## Questão 7
 # 
 # Repita o procedimento da questão 6, mas agora entre as alturas de `usa` e `can`. Qual o valor do p-valor retornado? Responda como um único escalar arredondado para oito casas decimais.
 
-# In[28]:
+# In[16]:
 
 
 def q7():
     usa = df.query('nationality in "USA"')['height']
     can = df.query('nationality in "CAN"')['height']
     
-    ttest = sct.ttest_ind(usa, can, equal_var = False, nan_policy = 'omit')
+    ttest_usa_can = sct.ttest_ind(usa, can, equal_var = False, nan_policy = 'omit')
 
-    return float(round(ttest.pvalue, 8))
+    return float(round(ttest_usa_can.pvalue, 8))
 
 
 # __Para refletir__:
