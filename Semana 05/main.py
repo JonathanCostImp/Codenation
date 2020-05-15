@@ -9,7 +9,7 @@
 
 # ## _Setup_ geral
 
-# In[1]:
+# In[2]:
 
 
 from math import sqrt
@@ -27,7 +27,7 @@ from sklearn.feature_selection import RFE
 #from loguru import logger
 
 
-# In[2]:
+# In[3]:
 
 
 # Algumas configurações para o matplotlib.
@@ -37,13 +37,13 @@ figsize(12, 8)
 sns.set()
 
 
-# In[3]:
+# In[4]:
 
 
 fifa = pd.read_csv("fifa.csv")
 
 
-# In[4]:
+# In[5]:
 
 
 columns_to_drop = ["Unnamed: 0", "ID", "Name", "Photo", "Nationality", "Flag",
@@ -62,72 +62,55 @@ except KeyError:
 
 # ## Inicia sua análise a partir daqui
 
-# In[5]:
+# In[6]:
 
 
 # Sua análise começa aqui.
 
 
-# In[6]:
+# In[7]:
 
 
 fifa.head()
 
 
-# In[7]:
+# In[8]:
 
 
 fifa.describe()
 
 
-# In[8]:
+# In[9]:
 
 
 fifa.columns
 
 
-# In[9]:
-
-
-plt.figure(figsize = (21,21))
-sns.heatmap(fifa[fifa.columns].corr().round(2), annot= True)
-
-
 # In[10]:
 
 
-pca = PCA().fit(fifa.dropna())
-evr = pca.explained_variance_ratio_
-evr
+plt.figure(figsize = (21,21))
+ax = sns.heatmap(fifa[fifa.columns].corr().round(2), annot= True)
+
+bottom, top = ax.get_ylim()
+ax.set_ylim(bottom + 0.5, top - 0.5)
 
 
 # In[11]:
 
 
-g = sns.lineplot(np.arange(len(evr)), np.cumsum(evr))
-g.axes.axhline(0.95, ls = "--", color="red")
-plt.xlabel('Number of components')
-plt.ylabel('Cumulative explained variance');
-
-
-# In[12]:
-
-
-cumulative_variance_ratio = np.cumsum(pca.explained_variance_ratio_)
-component_number = np.argmax(cumulative_variance_ratio >= 0.95) + 1 # Contagem começa em zero.
-
-component_number
+fifa.dropna(inplace = True)
 
 
 # ## Questão 1
 # 
 # Qual fração da variância consegue ser explicada pelo primeiro componente principal de `fifa`? Responda como um único float (entre 0 e 1) arredondado para três casas decimais.
 
-# In[13]:
+# In[12]:
 
 
 def q1():
-    pca = PCA().fit(fifa.dropna())
+    pca = PCA().fit(fifa)
     evr = pca.explained_variance_ratio_
     
     return float(round(evr[0], 3))
@@ -137,11 +120,11 @@ def q1():
 # 
 # Quantos componentes principais precisamos para explicar 95% da variância total? Responda como un único escalar inteiro.
 
-# In[14]:
+# In[13]:
 
 
 def q2():
-    pca = PCA().fit(fifa.dropna())
+    pca = PCA().fit(fifa)
     evr = pca.explained_variance_ratio_
     
     cumulative_variance_ratio = np.cumsum(pca.explained_variance_ratio_)
@@ -154,7 +137,7 @@ def q2():
 # 
 # Qual são as coordenadas (primeiro e segundo componentes principais) do ponto `x` abaixo? O vetor abaixo já está centralizado. Cuidado para __não__ centralizar o vetor novamente (por exemplo, invocando `PCA.transform()` nele). Responda como uma tupla de float arredondados para três casas decimais.
 
-# In[15]:
+# In[14]:
 
 
 x = [0.87747123,  -1.24990363,  -1.3191255, -36.7341814,
@@ -169,11 +152,11 @@ x = [0.87747123,  -1.24990363,  -1.3191255, -36.7341814,
      49.28911284]
 
 
-# In[16]:
+# In[15]:
 
 
 def q3():
-    pca = PCA(n_components = 2).fit(fifa.dropna())
+    pca = PCA(n_components = 2).fit(fifa)
     return tuple (pca.components_.dot(x).round(3))
 
 
@@ -181,16 +164,22 @@ def q3():
 # 
 # Realiza RFE com estimador de regressão linear para selecionar cinco variáveis, eliminando uma a uma. Quais são as variáveis selecionadas? Responda como uma lista de nomes de variáveis.
 
-# In[17]:
+# In[19]:
 
 
 def q4():
-    X = fifa.dropna().drop(columns = 'Overall')
-    y = fifa.dropna().Overall
+    X = fifa.drop(columns = 'Overall')
+    y = fifa.Overall
 
-    regressor = LinearRegression()
-    selector = RFE(regressor, 5, step = 1)
-    selector = selector.fit(X, y)
+    reglin = LinearRegression()
+    selection = RFE(reglin, 5, step = 1)
+    selection = selection.fit(X, y)
 
-    return list(X.loc[:, selector.support_].columns)
+    return list(X.loc[:, selection.support_].columns)
+
+
+# In[ ]:
+
+
+
 
