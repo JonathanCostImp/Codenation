@@ -9,7 +9,7 @@
 
 # ## _Setup_ geral
 
-# In[1]:
+# In[24]:
 
 
 import pandas as pd
@@ -26,7 +26,7 @@ from sklearn.feature_extraction.text import (CountVectorizer, TfidfTransformer, 
 from sklearn.datasets import load_digits, fetch_20newsgroups
 
 
-# In[2]:
+# In[25]:
 
 
 # Algumas configurações para o matplotlib.
@@ -36,13 +36,13 @@ figsize(12, 8)
 sns.set()
 
 
-# In[3]:
+# In[26]:
 
 
-df = pd.read_csv("countries.csv")
+df = pd.read_csv("countries.csv", decimal = ',')
 
 
-# In[4]:
+# In[28]:
 
 
 new_column_names = ["Country", "Region", "Population", "Area", "Pop_density", "Coastline_ratio", "Net_migration", "Infant_mortality", "GDP", "Literacy", 
@@ -58,25 +58,13 @@ df.columns = new_column_names
 
 # ## Inicia sua análise a partir daqui
 
-# In[5]:
+# In[29]:
 
 
 # Sua análise começa aqui.
 
 
-# In[6]:
-
-
-def parse_str_float(str):
-    try:
-        return float(str.replace(",", "."))
-    except:
-        return str
-
-df = df.applymap(parse_str_float)
-
-
-# In[7]:
+# In[31]:
 
 
 cols = ['Country', 'Region']
@@ -92,7 +80,7 @@ te (df, cols)
 # 
 # Quais são as regiões (variável `Region`) presentes no _data set_? Retorne uma lista com as regiões únicas do _data set_ com os espaços à frente e atrás da string removidos (mas mantenha pontuação: ponto, hífen etc) e ordenadas em ordem alfabética.
 
-# In[8]:
+# In[32]:
 
 
 def q1():
@@ -103,7 +91,7 @@ def q1():
 # 
 # Discretizando a variável `Pop_density` em 10 intervalos com `KBinsDiscretizer`, seguindo o encode `ordinal` e estratégia `quantile`, quantos países se encontram acima do 90º percentil? Responda como um único escalar inteiro.
 
-# In[9]:
+# In[33]:
 
 
 def q2():
@@ -119,7 +107,7 @@ def q2():
 # 
 # Se codificarmos as variáveis `Region` e `Climate` usando _one-hot encoding_, quantos novos atributos seriam criados? Responda como um único escalar.
 
-# In[10]:
+# In[34]:
 
 
 def q3():
@@ -137,7 +125,7 @@ def q3():
 # 
 # Após aplicado o _pipeline_ descrito acima aos dados (somente nas variáveis dos tipos especificados), aplique o mesmo _pipeline_ (ou `ColumnTransformer`) ao dado abaixo. Qual o valor da variável `Arable` após o _pipeline_? Responda como um único float arredondado para três casas decimais.
 
-# In[11]:
+# In[35]:
 
 
 test_country = ['Test Country', 'NEAR EAST', -0.19032480757326514, -0.3232636124824411, -0.04421734470810142, -0.27528113360605316, 0.13255850810281325, 
@@ -145,13 +133,13 @@ test_country = ['Test Country', 'NEAR EAST', -0.19032480757326514, -0.3232636124
                 -0.13929748680369286, 1.3163604645710438, -0.3699637766938669, -0.6149300604558857, -0.854369594993175, 0.263445277972641, 0.5712416961268142]
 
 
-# In[12]:
+# In[36]:
 
 
 ct = pd.DataFrame([test_country], columns = df.columns)
 
 
-# In[13]:
+# In[37]:
 
 
 cols2 = df.select_dtypes(['int64', 'float64']).columns
@@ -160,7 +148,7 @@ tf = ColumnTransformer(transformers = [('number', pl, cols2)], n_jobs = -1)
 tf.fit(df)
 
 
-# In[14]:
+# In[38]:
 
 
 def q4():
@@ -178,7 +166,7 @@ def q4():
 # 
 # Você deveria remover da análise as observações consideradas _outliers_ segundo esse método? Responda como uma tupla de três elementos `(outliers_abaixo, outliers_acima, removeria?)` ((int, int, bool)).
 
-# In[15]:
+# In[39]:
 
 
 def q5():
@@ -208,14 +196,14 @@ def q5():
 # 
 # Aplique `CountVectorizer` ao _data set_ `newsgroups` e descubra o número de vezes que a palavra _phone_ aparece no corpus. Responda como um único escalar.
 
-# In[16]:
+# In[40]:
 
 
 categorias = ['sci.electronics', 'comp.graphics', 'rec.motorcycles']
 newsgroup_data = fetch_20newsgroups(subset='train', categories=categorias, shuffle=True, random_state=12)
 
 
-# In[17]:
+# In[41]:
 
 
 def q6():
@@ -228,7 +216,7 @@ def q6():
 # 
 # Aplique `TfidfVectorizer` ao _data set_ `newsgroups` e descubra o TF-IDF da palavra _phone_. Responda como um único escalar arredondado para três casas decimais.
 
-# In[18]:
+# In[42]:
 
 
 def q7():
